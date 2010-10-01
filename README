@@ -1,0 +1,14 @@
+This is a mirror of http://www.vim.org/scripts/script.php?script_id=3262
+
+View patches or pipe various Mercurial diff output to vim and see changesets, files, and hunks folded nicely together.
+
+Some examples:
+       hg in --patch | vim - -c "setlocal ft=diff"
+       hg diff | gvim -
+       hg diff -r 12 -r 13 | vim -
+
+Right now, this pretty much just works with Mercurial diff output.  Because Hg can use Git style patches, it does work with some Git output but it is not 100% reliable or useful.
+
+Eventually, I hope to make this work with more version control systems and just about anything that can produce unified diff output.
+
+The script can also be found on my bitbucket repo: https://bitbucket.org/thetoast/vimstuff
