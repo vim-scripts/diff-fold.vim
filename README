@@ -13,4 +13,5 @@ Right now, this pretty much just works with Mercurial diff output.  Because Hg c
 
 Eventually, I hope to make this work with more version control systems and just about anything that can produce unified diff output.
 
-The script can also be found on my bitbucket repo: https://bitbucket.org/thetoast/vimstuff
+This plugin has also been made into a pathogen bundle and can be installed with an 'hg clone https://bitbucket.org/thetoast/diff-fold' in your pathogen bundle folder.
+In the future, the pathogen bundle may be more up-to-date, but any major updates will be made available here.

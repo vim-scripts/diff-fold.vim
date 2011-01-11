@@ -2,7 +2,7 @@
 " File: ftplugin/diff_fold.vim
 " Description: Folding script for Mercurial diffs
 "
-" Version: 0.3
+" Version: 0.3.1
 "
 " Author: Ryan Mechelke <rfmechelke AT gmail DOT com>
 "
@@ -20,6 +20,10 @@
 "       hg log --patch src\somefile.cpp | vim -
 "
 " changelog:
+"   0.3.1 - (2011/1/11):
+"       * fixed a bug with folding the 'hg export' style changesets
+"       * made the global commands silent
+"       * added better foldtext for 'hg export' style changesets
 "   0.3 - (2011/1/6):
 "       * added an ftdetect script so that mercurial output is automatically
 "         detected.  "setlocal ft=diff" is no longer needed.
@@ -53,7 +57,7 @@ normal! gg
 
 " fold all hunks
 try
-    g/^@@/.,/\(^# HG changeset\|\nchangeset\|^diff\|^@@\)/-1 fold
+    silent g/^@@/.,/\(^# HG changeset\|\nchangeset\|^diff\|^@@\)/-1 fold
 catch /E16/
 endtry
 normal! G
@@ -63,7 +67,7 @@ endif
 
 " fold file diffs
 try
-    g/^diff/.,/\(^# HG changeset\|\nchangeset\|^diff\)/-1 fold
+    silent g/^diff/.,/\(^# HG changeset\|\nchangeset\|^diff\)/-1 fold
 catch /E16/
 endtry
 normal! G
@@ -72,10 +76,11 @@ if search('^diff', 'b')
 endif
 
 " fold changesets (if any)
-if search('^\(changeset\|^# HG changeset\)', '')
+if search('^\(changeset\|# HG changeset\)', '')
     try
-        g/^\(changeset\|^# HG changeset\)/.,/\(\nchangeset\|# HG changeset\)/-1 fold
+        silent g/^\(changeset\|# HG changeset\)/.,/\(\nchangeset\|^# HG changeset\)/-1 fold
     catch /E16/
+    catch /E486/
     endtry
     normal! G
     if search('^\(changeset\|^# HG changeset\)', 'b')
@@ -92,6 +97,10 @@ function! MyDiffFoldText()
 
     if line =~ "^changeset.*"
         let foldtext .= substitute(line, "\:   ", " ", "")
+    elseif line =~ "^# HG changeset.*"
+        let foldtext .= "changeset "
+        let node = getline(v:foldstart + 3)
+        let foldtext .= substitute(node, "\# Node ID ", "", "")
     elseif line =~ "^diff.*"
         if (line =~ "diff -r")
             let matches = matchlist(line, 'diff -r [a-z0-9]\+ \(.*\)$')
