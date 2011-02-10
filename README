@@ -1,13 +1,26 @@
 This is a mirror of http://www.vim.org/scripts/script.php?script_id=3262
 
-View patches or pipe various Mercurial diff output to vim and see changesets, files, and hunks folded nicely together.
+Pipe various Mercurial diff output to vim and see changesets, files, and
+hunks folded nicely together.  In addition to providing folding of diff
+text, diff_fold also provides a navigation pane which you can use to more
+easily navigate large diffs.
 
 Some examples:
-       hg in --patch | vim -
-       hg diff | vim -
-       hg diff -r 12 -r 13 | vim -
-       hg export -r 12: | vim -
-       hg log --patch src\somefile.cpp | vim -
+    hg in --patch | vim -
+    hg diff | vim -
+    hg diff -r 12 -r 13 | vim -
+    hg export -r 12: | vim -
+    hg log --patch src\somefile.cpp | vim -
+
+Navigation pane usage:
+       
+    The keybinding <Leader>nav will bring up the navigation pane.  You can
+    use the 'Enter' or 'v' keys to either go to, or view whole changsets
+    or files in the Diff View
+
+    If you don't like the default mapping, you can map a new one as
+    follows:
+        map {newmap} <Plug>DiffFoldNav
 
 Right now, this pretty much just works with Mercurial diff output.  Because Hg can use Git style patches, it does work with some Git output but it is not 100% reliable or useful.
 
